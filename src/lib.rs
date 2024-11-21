@@ -1,7 +1,10 @@
 #![no_std]
 
 use core::{future, sync::atomic::AtomicBool};
+use oneshot::TryRecvError;
+
 extern crate alloc;
+
 use {
     alloc::{boxed::Box, collections::vec_deque::VecDeque, sync::Arc},
     core::{
@@ -187,6 +190,28 @@ where
     });
 
     INPUT_TASK_QUEUE.lock().push_back(Box::new(task));
+}
+
+/// Adds task for a future to the list of tasks and waits for it to complete before returning the result.
+pub fn block_on<T>(future: impl future::Future<Output = T> + 'static + Send) -> T
+where
+    T: Send + 'static,
+{
+    let (result_sender, result_receiver) = oneshot::channel();
+
+    add_async(async {
+        result_sender.send(future.await).unwrap();
+    });
+
+    loop {
+        match result_receiver.try_recv() {
+            Ok(result) => return result,
+            Err(TryRecvError::Empty) => update(),
+            Err(TryRecvError::Disconnected) => {
+                panic!("The sender was dropped before sending the result")
+            }
+        }
+    }
 }
 
 /// Checks is uncompleted tasks remain.
