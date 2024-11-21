@@ -8,6 +8,7 @@ async fn async_sleep(print_name: &str, time: Duration) {
     println!("{print_name}: after sleep {sleep_time} ms");
 }
 
+#[cfg_attr(test, test)]
 fn main() -> () {
     println!("hello");
 

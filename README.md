@@ -1,6 +1,7 @@
 # executor
 
 <a href="https://docs.rs/executor"><img src="https://img.shields.io/badge/docs-latest-blue.svg?style=flat-square" alt="docs.rs docs" /></a>
+[![Tests](https://github.com/tobisl/executor/actions/workflows/test.yml/badge.svg)](https://github.com/tobisl/executor/actions/workflows/test.yml)
 
 ```toml
 [dependencies]

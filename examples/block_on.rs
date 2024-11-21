@@ -21,6 +21,7 @@ async fn a() {
     println!("goodbye world");
 }
 
+#[cfg_attr(test, test)]
 fn main() -> () {
     executor::add_async(async {
         a().await;

@@ -40,6 +40,7 @@ fn receive_signal_from_somewhere(state: Arc<Mutex<AsyncSignalWaiterState>>) {
     });
 }
 
+#[cfg_attr(test, test)]
 fn main() -> () {
     let state = Arc::new(Mutex::new(AsyncSignalWaiterState {
         ready: false,
