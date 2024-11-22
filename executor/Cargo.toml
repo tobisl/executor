@@ -1,0 +1,26 @@
+[package]
+name = "executor"
+version = "0.10.0"
+authors = ["Richard Anaya"]
+edition = "2021"
+description = "A minimalistic async/await executor"
+license = "MIT OR Apache-2.0"
+categories = ["wasm", "no-std"]
+repository = "https://www.github.com/richardanaya/executor"
+readme = "README.md"
+rust-version = "1.63"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+woke = "0"
+spin = "0"
+oneshot = { version = "0.1.8", default-features = false }
+executor_macros = { path = "../executor_macros", optional = true }
+
+[dev-dependencies]
+async-std = "1"
+
+[features]
+default = ["macros"]
+macros = ["executor_macros"]

@@ -5,6 +5,9 @@ use oneshot::TryRecvError;
 
 extern crate alloc;
 
+#[cfg(feature = "macros")]
+pub use executor_macros::main;
+
 use {
     alloc::{boxed::Box, collections::vec_deque::VecDeque, sync::Arc},
     core::{
@@ -220,3 +223,35 @@ pub fn is_done() -> bool {
         && INPUT_TASK_QUEUE.lock().is_empty()
         && WOKEN_TASK_QUEUE.lock().is_empty()
 }
+
+// #[cfg(test)]
+// mod tests {
+//     use super::*;
+//     use core::future::Future;
+//     use core::{
+//         pin::Pin,
+//         task::{Context, Poll},
+//     };
+
+//     struct Foo {}
+
+//     impl Future for Foo {
+//         type Output = u8;
+
+//         fn poll(self: Pin<&mut Self>, _cx: &mut Context<'_>) -> Poll<Self::Output> {
+//             Poll::Ready(42)
+//         }
+//     }
+
+//     #[super::main]
+//     async fn main() -> core::result::Result<(), ()> {
+//         let res = Foo {}.await;
+//         assert_eq!(res, 42);
+//         Ok(())
+//     }
+
+//     #[test]
+//     fn main_test() -> () {
+//         main().unwrap();
+//     }
+// }
